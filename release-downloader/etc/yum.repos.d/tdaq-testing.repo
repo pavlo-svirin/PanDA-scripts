@@ -1,0 +1,14 @@
+[tdaq-testing]
+name=non-official updates and patches for TDAQ releases
+baseurl=http://atlas-tdaq-sw.web.cern.ch/atlas-tdaq-sw/yum/tdaq/testing
+enabled=1 
+
+[dqm-common-testing]
+name=dqm-common projects
+baseurl=http://atlas-tdaq-sw.web.cern.ch/atlas-tdaq-sw/yum/dqm-common/testing
+enabled=1
+
+[tdaq-common-testing]
+name=non-official updates and patches for TDAQ releases
+baseurl=http://atlas-tdaq-sw.web.cern.ch/atlas-tdaq-sw/yum/tdaq-common/testing
+enabled=1 

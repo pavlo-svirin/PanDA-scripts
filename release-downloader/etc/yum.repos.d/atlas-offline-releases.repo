@@ -1,0 +1,9 @@
+[atlas-offlsine-releases-slc6]
+name=ATLAS offline releases SLC6
+baseurl=http://cern.ch/atlas-software-dist-eos/RPMs/releases/slc6
+enabled=1
+
+[atlas-offline-releases-cc7]
+name=ATLAS offline releases CC7
+baseurl=http://cern.ch/atlas-software-dist-eos/RPMs/releases/cc7
+enabled=0

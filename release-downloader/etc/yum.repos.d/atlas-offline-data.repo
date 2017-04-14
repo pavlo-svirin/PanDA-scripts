@@ -1,0 +1,4 @@
+[atlas-offline-data]
+name=ATLAS offline data packages
+baseurl=http://cern.ch/atlas-software-dist-eos/RPMs/data
+enabled=1

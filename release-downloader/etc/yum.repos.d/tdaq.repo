@@ -1,0 +1,33 @@
+[LCG-slc5]
+name=CERN LCG software
+baseurl=http://atlas-tdaq-sw.web.cern.ch/atlas-tdaq-sw/yum/LCG/slc5
+enabled=1
+[tdaq-common-slc5]
+name=tdaq-common
+baseurl=http://atlas-tdaq-sw.web.cern.ch/atlas-tdaq-sw/yum/tdaq-common/slc5
+enabled=1
+[dqm-common-slc5]
+name=dqm-common
+baseurl=http://atlas-tdaq-sw.web.cern.ch/atlas-tdaq-sw/yum/dqm-common/slc5
+enabled=1
+[tdaq-slc5]
+name=TDAQ releases
+baseurl=http://atlas-tdaq-sw.web.cern.ch/atlas-tdaq-sw/yum/tdaq/slc5
+enabled=1
+
+[tdaq-common-slc6]
+name=tdaq-common
+baseurl=http://atlas-tdaq-sw.web.cern.ch/atlas-tdaq-sw/yum/tdaq-common/slc6
+enabled=1
+[dqm-common-slc6]
+name=dqm-common
+baseurl=http://atlas-tdaq-sw.web.cern.ch/atlas-tdaq-sw/yum/dqm-common/slc6
+enabled=1
+[tdaq-slc6]
+name=TDAQ releases
+baseurl=http://atlas-tdaq-sw.web.cern.ch/atlas-tdaq-sw/yum/tdaq/slc6
+enabled=1
+[external]
+name=external sw
+baseurl=http://atlas-tdaq-sw.web.cern.ch/atlas-tdaq-sw/yum/external
+

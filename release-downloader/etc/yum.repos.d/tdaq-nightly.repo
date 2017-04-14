@@ -1,0 +1,4 @@
+[tdaq-nightly]
+name=nightly snapshots of TDAQ releases
+baseurl=http://cern.ch/atlas-tdaq-sw/yum/tdaq/nightly
+enabled=1

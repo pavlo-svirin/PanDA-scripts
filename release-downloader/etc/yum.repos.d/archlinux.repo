@@ -1,0 +1,6 @@
+[armlinux-armv7l]
+name=TDAQ ARM ArchLinux Repo
+baseurl=http://cern.ch/RceProjectPortal/software/ayum/noarch
+enabled=1
+
+

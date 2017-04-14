@@ -1,0 +1,19 @@
+[offline-lcg-slc5]
+name=LCG SLC5
+baseurl=http://atlas-computing.web.cern.ch/atlas-computing/links/reposDirectory/lcg/slc5/yum/
+enabled=0
+
+[offline-lcg-slc6]
+name=LCG SLC6
+baseurl=http://atlas-computing.web.cern.ch/atlas-computing/links/reposDirectory/lcg/slc6/yum/
+enabled=1
+
+[offline-slc5]
+name=ATLAS offline releases SLC5
+baseurl=http://atlas-computing.web.cern.ch/atlas-computing/links/reposDirectory/offline/slc5/yum
+enabled=1
+
+[offline-slc6]
+name=ATLAS offline releases SLC6
+baseurl=http://atlas-computing.web.cern.ch/atlas-computing/links/reposDirectory/offline/slc6/yum
+enabled=1

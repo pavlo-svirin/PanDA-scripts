@@ -1,0 +1,5 @@
+[lcg-repo]
+name=LCG Repository
+baseurl=http://cern.ch/service-spi/external/rpms/lcg
+prefix=/sw/lcg/releases
+enabled=1
