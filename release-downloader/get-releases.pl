@@ -23,6 +23,8 @@ $dstdir = realpath $dstdir;
 $dldir = realpath $dldir;
 $tmproot = realpath $tmproot;
 
+system("mkdir destroot test tmp");
+
 opendir DIR, $yumdir; 
 my @files = grep(/\.repo/,readdir DIR);
 closedir DIR;
