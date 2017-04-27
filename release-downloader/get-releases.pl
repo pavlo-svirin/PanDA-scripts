@@ -4,26 +4,67 @@ use strict;
 
 use Data::Dumper;
 use Cwd qw(abs_path realpath getcwd);
+use Getopt::Std;
+use File::Spec;
 
 sub cleanup{
-	system("rm -f *.rpm");
+	my $tmproot = shift;
+	return 1 if not defined($tmproot) or $tmproot eq "";
+	system("rm -rf $tmproot");
+}
+
+sub help{
+	print "Usage: get-release.pl -d <destination_directory> -t <tmp_dir> <release_name>
+		where: <destination_directory> - release will be installed into \"<destination_directory>/<release_name>\"
+			<tmp_directory> - a place where all of the temp data will be stored
+			<release_name> - name of the release to be installed, e.g., AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt\n\n";
 }
 
 my $yumdir = './etc/yum.repos.d/';
-my $urls_file = 'urls.list';
 
 # ========
+
+my %options=();
+getopts("hd:t:", \%options);
+
+if(defined($options{h})){
+	help;
+	exit 0;
+}
+
+
+if(not defined($options{d})){
+	print "Destination directory not specified\n";
+	exit 1;
+}
+
+if(not defined($options{t})){
+	print "Temporary directory not specified\n";
+	exit 1;
+}
+
 my $relname = $ARGV[0];
-my $dstdir = $ARGV[1] || "destroot";
-my $dldir = $ARGV[2] || "test";
-my $tmproot = $ARGV[3] || "tmp";
+#my $dstdir = $ARGV[1] || "destroot";
+my $dstdir = "$options{d}/$relname";
+#my $dldir = $ARGV[2] || "test";
+my $dldir = "$options{t}/rpms";
+#my $tmproot = $ARGV[3] || "tmp";
+my $tmproot = "$options{t}/tmp";
+
+if(not defined($relname)){
+	print "No release name specified (e.g.: AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt)\n";
+	exit 0;
+}
 # ========
 
-$dstdir = realpath $dstdir;
-$dldir = realpath $dldir;
-$tmproot = realpath $tmproot;
+$dstdir = File::Spec->rel2abs($dstdir);
+$dldir = File::Spec->rel2abs($dldir);
+$tmproot = File::Spec->rel2abs($tmproot);
+my $tmp = File::Spec->rel2abs($options{t});
+my $urls_file = "$tmp/urls.list";
 
-system("mkdir destroot test tmp");
+print "Installing $relname using $dstdir with temporary data in: $tmp\n";
+print "Now reading local yum configuration\n";
 
 opendir DIR, $yumdir; 
 my @files = grep(/\.repo/,readdir DIR);
@@ -60,11 +101,14 @@ foreach my $file (@files){
 }
 #print Dumper(\%prefixes);
 
+# making directories
+system("mkdir -p $dldir $dstdir $tmproot");
+
 # yumdownload
-print "Resolving packages:\n\n";
+print "Config read. Resolving packages.\n";
 #print "yumdownloader -c $ENV{PWD}/etc/yum.conf --urls --resolve AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt > ./urls.txt";
 my $extraPackages = "AtlasSetup CMake_3.6.0_Linux-x86_64-0-0";
-system("yumdownloader -q -c $ENV{PWD}/etc/yum.conf --urls --resolve AtlasOffline_21.0.15_x86_64-slc6-gcc49-opt $extraPackages > ./urls.list");
+system("yumdownloader -q -c $ENV{PWD}/etc/yum.conf --urls --resolve $relname $extraPackages > $urls_file");
 # 		or die("Unable to find release or resolve dependencies, check release name or network connectivity");
  
 # parse url list, create prefix files
@@ -114,3 +158,6 @@ foreach my $pkg (@packages){
 	system("rm -rf ./*");
 	#last;
 }
+
+print "Cleaning up before exit";
+#cleanup;
