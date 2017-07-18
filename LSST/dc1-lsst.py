@@ -36,7 +36,7 @@ sensors = ['00', '01', '02', '10', '11', '12', '20', '21', '22']
 
 rafts = ['01', '02', '03', '10', '11', '12', '13', '14', '20', '21', '22', '23', '24', '30', '31', '32', '33', '34', '41', '42', '43']
 # debug
-rafts = ['01', '02', '03', '10']
+#rafts = ['01', '02', '03', '10']
 #rafts = ['22']
 #rafts = ['03']
 
@@ -126,12 +126,12 @@ for d in directories:
 			#job.jobParameters = 'gfal-copy -r %s%s ./%d/ ; ' % (astro_storage_url, se_directory, d)
 			job.jobParameters = """for i in {1..20}; do gfal-copy -t 300 --transfer-timeout 300 -r %s%s file://$(pwd)/%d/ ; if [[ "$?" == "0" ]]; then break; fi; if [[ "$i" -eq "20" ]]; then echo Unable to do stage-in; exit 1; fi; done ; """ % (astro_storage_url, se_directory, d)
 			job.jobParameters = job.jobParameters + phosim_executable
-			job.jobParameters = job.jobParameters + "%s/phosim_cat_%s.txt -s R%s_S%s -t 4 -o $(pwd)/output -w $(pwd)/work; rm -rf ./%s; #" % (d,d,r,sen,d)
+			job.jobParameters = job.jobParameters + "%s/phosim_cat_%s.txt -s R%s_S%s -t 8 -o $(pwd)/output -w $(pwd)/work; rm -rf ./%s; #" % (d,d,r,sen,d)
+			#job.jobParameters = job.jobParameters + "%s/phosim_cat_%s.txt -s R%s_S%s -o $(pwd)/output -w $(pwd)/work; rm -rf ./%s; #" % (d,d,r,sen,d)
 
 			print job.jobParameters + " site: " + job.computingSite + "\n\n"
 			jobs.append(job)
 			i = i+1
-			break
 
 print "Jobs to be submitted: %d" % i
 
@@ -139,6 +139,7 @@ if dry_run:
 	print "Dry run requested....exiting."
 	sys.exit(0)
 
+print "Submitting...\n"
 s,o = Client.submitJobs(jobs, srvID=aSrvID)
 print s
 
