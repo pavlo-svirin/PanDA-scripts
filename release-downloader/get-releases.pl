@@ -14,10 +14,12 @@ sub cleanup{
 }
 
 sub help{
-	print "Usage: get-release.pl -d <destination_directory> -t <tmp_dir> <release_name>
+	print "Usage: get-release.pl -d <destination_directory> [-c <cache_dir>] <release_name>
 		where: <destination_directory> - release will be installed into \"<destination_directory>/<release_name>\"
-			<tmp_directory> - a place where all of the temp data will be stored
-			<release_name> - name of the release to be installed, e.g., AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt\n\n";
+			<cace_directory> - a place where cache data will be stored
+			<release_name> - name of the release to be installed, e.g., AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt\n
+		Example:
+			get-release.sh -d /lustre/atlas/proj-shared/csc108/app_dir/atlas_app/atlas_rel/release-test/  AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt\n\n";
 }
 
 my $yumdir = './etc/yum.repos.d/';
