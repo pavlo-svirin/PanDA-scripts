@@ -35,7 +35,7 @@ job.jobName           = "%s" % commands.getoutput('uuidgen')
 # MPI transform on Titan that will run actual job
 #Payload for job submission
 #job.transformation    = '/bin/date'
-job.transformation    = 'cd '
+job.transformation    = ' ./wrapper'
 #job.transformation    = '--version; /bin/date'
 #job.transformation    = '--version; '
 #job.transformation    = '/cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/phosim.py'
@@ -51,8 +51,8 @@ job.destinationSE     = destName
 job.currentPriority   = 1000
 job.prodSourceLabel   = 'user'
 job.computingSite     = site
-job.jobParameters = ' ; sleep 600'
-job.jobParameters = ' /lustre/atlas1/nph109/proj-shared/forPSV/ ; ./wrapper'
+#job.jobParameters = ' /lustre/atlas1/nph109/proj-shared/forPSV/ ; ./wrapper'
+job.jobParameters = ''
 #job.jobParameters     = " /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/phosim.py    /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/star -c  /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/quickbackground"
 # job.jobParameters     = " /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/small_catalog -c  /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/nobackground "
 #job.jobParameters     = " /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/star "
