@@ -110,6 +110,7 @@ system("mkdir -p $dldir $dstdir $tmproot");
 print "Config read. Resolving packages.\n";
 #print "yumdownloader -c $ENV{PWD}/etc/yum.conf --urls --resolve AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt > ./urls.txt";
 my $extraPackages = "AtlasSetup CMake_3.6.0_Linux-x86_64-0-0";
+print("yumdownloader -q -c $ENV{PWD}/etc/yum.conf --urls --resolve $relname $extraPackages > $urls_file");
 system("yumdownloader -q -c $ENV{PWD}/etc/yum.conf --urls --resolve $relname $extraPackages > $urls_file");
 # 		or die("Unable to find release or resolve dependencies, check release name or network connectivity");
  
@@ -135,7 +136,8 @@ close $fh;
 
 chdir $tmproot;
 
-print getcwd . "\n";
+print getcwd() . "\n";
+print "$tmproot\n";
 
 foreach my $pkg (@packages){
 	my $fname = @$pkg[2];
@@ -155,7 +157,10 @@ foreach my $pkg (@packages){
 	print("cp -r ./$relocation_root/* $dstdir/$prefix/");
 	#print("mv $relocation_root/* $dstdir/$prefix/\n");
 	# cleanup tmproot
-	last if getcwd() ne $tmproot;
+	#if(getcwd() ne $tmproot){
+	#	print getcwd() . "!=$tmproot -> LAST!";
+	#	last;
+	#}
 	print "Cleaning TMPROOT";
 	system("rm -rf ./*");
 	#last;

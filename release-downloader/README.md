@@ -8,7 +8,9 @@ Usage for the tool:
 2) get-release.pl -d <destination_directory> -t <tmp_dir> <release_name>
 
 	where: <destination_directory> - release will be installed into "<destination_directory>/<release_name>"
+
 		<tmp_dir> - a path to directory where temporary files for the installation will be stored
+
 		<release_name> - full name of the release to be installed, e.g., AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt
 
 	Example:
@@ -21,5 +23,6 @@ Usage for the tool:
 4) install_dbrelease.sh <pacman_dir> <release_directory> 
 
 	where: <pacman_dir> is the same as at the previous step
+
 		<release_directory> is "<destination_directory>/<release_name>" at step 2
 
