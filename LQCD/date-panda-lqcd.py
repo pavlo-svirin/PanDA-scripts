@@ -21,6 +21,7 @@ for idx,argv in enumerate(sys.argv):
 
 #site = sys.argv[1]
 site = 'ANALY_ORNL_Titan_LQCD'
+#site = 'ANALY_BBP_Titan'
 #site = 'BNL-LSST'
 #site = 'UKI-NORTHGRID-LANCS-HEP-LSST'
 #site = 'UKI-NORTHGRID-MAN-HEP_LSST'
@@ -35,6 +36,7 @@ job.jobName           = "%s" % commands.getoutput('uuidgen')
 # MPI transform on Titan that will run actual job
 #Payload for job submission
 #job.transformation    = '/bin/date'
+#job.transformation    = 'cd '
 job.transformation    = ' ./wrapper'
 #job.transformation    = '--version; /bin/date'
 #job.transformation    = '--version; '
@@ -59,7 +61,7 @@ job.jobParameters = ''
 #job.jobParameters = ""
 #job.jobParameters     = " /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/small_catalog -c  /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/nobackground "
 #job.jobParameters     = " /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/phosim.py    /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/small_catalog /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/quickbackground"
-job.VO                = 'lsst'
+#job.VO                = 'lsst'
 
 fileOL = FileSpec()
 fileOL.lfn = "%s.job.log.tgz" % job.jobName
@@ -73,5 +75,6 @@ job.addFile(fileOL)
 for i in range(1):
 	s,o = Client.submitJobs([job],srvID=aSrvID)
 	print s
+	print o
 	for x in o:
 		print "PandaID=%s" % x[0]
