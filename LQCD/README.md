@@ -1,6 +1,6 @@
 # Script to use for submissions
 
-'''Run the following commands:'''
+## Run the following commands:
 
 
 
@@ -20,8 +20,8 @@ cd PanDA-scripts/LQCD
 
 
 
-'''modify the script according to your needs '''
-'''now run it '''
+### modify the script according to your needs
+### now run it
 
 python date-panda-lqcd.py
 
@@ -32,7 +32,7 @@ python date-panda-lqcd.py
 
 
 
-'''Submission script modification instructions:'''
+## Submission script modification instructions:
 
 
 
@@ -41,7 +41,7 @@ TBD
 
 
 
-'''How to control the progress'''
+## How to control the progress
 
 
 
