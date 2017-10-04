@@ -22,6 +22,7 @@ cd PanDA-scripts/LQCD
 
 **modify the script according to your needs**
 
+The most important items to modify are "transformation" which represents an executable to be run (line 30) and "jobParameters" (line 37).
 
 **now run it:**
 
