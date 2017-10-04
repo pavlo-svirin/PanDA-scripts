@@ -3,7 +3,7 @@
 ## Run the following commands:
 
 
-
+```bash
 git clone https://github.com/PanDAWMS/panda-server.git
 
 export PANDA_URL="http://panda-pilot.ccs.ornl.gov/server/panda"
@@ -17,7 +17,7 @@ export PYTHONPATH=$PYTHONPATH:/lustre/atlas/proj-shared/proj-shared/nph109/titan
 git clone https://github.com/pavlo-svirin/PanDA-scripts.git
 
 cd PanDA-scripts/LQCD
-
+```
 
 
 **modify the script according to your needs**
