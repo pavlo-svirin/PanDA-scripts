@@ -52,3 +52,15 @@ Go to : http://panda-pilot.ccs.ornl.gov/latest/job/PanDA_ID_of_the_job/
 
 For now it is only possible to track progress per job.
 
+
+To access the Monitor:
+
+1) create a tunnel to ORNL Titan:
+
+```bash
+ssh -D8080 -N user@dtn.ccs.ornl.gov
+```
+
+2) in the configuration for a browser (example for Firefox):
+
+Preferences -> Advanced -> Network -> Settings -> select "Manual proxy configuration", SOCKS host: "localhost", port: "8080"
