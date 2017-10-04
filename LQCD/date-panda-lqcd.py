@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-#titan_testScript_ec2_alice_2.py
-# This script is for running A01_alicegeo through PanDA
+# This script is for running LQCD test jobs through PanDA
 #
 
 import sys
@@ -19,13 +18,7 @@ for idx,argv in enumerate(sys.argv):
         sys.argv = sys.argv[:idx]
         break
 
-#site = sys.argv[1]
 site = 'ANALY_ORNL_Titan_LQCD'
-#site = 'ANALY_BBP_Titan'
-#site = 'BNL-LSST'
-#site = 'UKI-NORTHGRID-LANCS-HEP-LSST'
-#site = 'UKI-NORTHGRID-MAN-HEP_LSST'
-#site = 'ANALY_ORNL_Titan'
 
 datasetName = 'panda.destDB.%s' % commands.getoutput('uuidgen')
 destName    = 'local'
@@ -34,34 +27,14 @@ job = JobSpec()
 job.jobDefinitionID   = int(time.time()) % 10000
 job.jobName           = "%s" % commands.getoutput('uuidgen')
 # MPI transform on Titan that will run actual job
-#Payload for job submission
-#job.transformation    = '/bin/date'
-#job.transformation    = 'cd '
 job.transformation    = ' ./wrapper'
-#job.transformation    = '--version; /bin/date'
-#job.transformation    = '--version; '
-#job.transformation    = '/cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/phosim.py'
-#job.transformation = 'mkdir work output; /bin/date # '
-#job.transformation    = 'mkdir work output; python /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/phosim.py '
-#job.transformation    = '--version; mkdir work output; python '
-#job.transformation    = '--version; mkdir work output; /lustre/atlas/proj-shared/csc108/app_dir/lsst/software/phosim-phosim_release-0876792bb103/phosim.py '
-#job.transformation    = '--version; mkdir work output; echo AAAAA > output/out'
-#job.transformation    = '/lustre/atlas/proj-shared/csc108/app_dir/lsst/software/phosim-phosim_release-0876792bb103/phosim.py    /lustre/atlas/proj-shared/csc108/app_dir/lsst/software/phosim-phosim_release-0876792bb103/examples/star  /lustre/atlas/proj-shared/csc108/app_dir/lsst/software/phosim-phosim_release-0876792bb103/phosim/examples/nobackground  -o ./ -w ./'
 
 job.destinationDBlock = datasetName
 job.destinationSE     = destName
 job.currentPriority   = 1000
 job.prodSourceLabel   = 'user'
 job.computingSite     = site
-#job.jobParameters = ' /lustre/atlas1/nph109/proj-shared/forPSV/ ; ./wrapper'
 job.jobParameters = ''
-#job.jobParameters     = " /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/phosim.py    /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/star -c  /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/quickbackground"
-# job.jobParameters     = " /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/small_catalog -c  /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/nobackground "
-#job.jobParameters     = " /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/star "
-#job.jobParameters = ""
-#job.jobParameters     = " /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/small_catalog -c  /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/nobackground "
-#job.jobParameters     = " /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/phosim.py    /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/small_catalog /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/quickbackground"
-#job.VO                = 'lsst'
 
 fileOL = FileSpec()
 fileOL.lfn = "%s.job.log.tgz" % job.jobName
