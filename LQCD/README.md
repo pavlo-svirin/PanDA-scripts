@@ -48,7 +48,7 @@ TBD
 
 
 
-Go to : http://panda-pilot.ccs.ornl.gov/latest/job/<PanDA id of the job>/
+Go to : http://panda-pilot.ccs.ornl.gov/latest/job/PanDA_ID_of_the_job/
 
 For now it is only possible to track progress per job.
 
