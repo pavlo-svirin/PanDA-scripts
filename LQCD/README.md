@@ -20,8 +20,11 @@ cd PanDA-scripts/LQCD
 
 
 
-### modify the script according to your needs
-### now run it
+**modify the script according to your needs**
+
+
+**now run it:**
+
 
 python date-panda-lqcd.py
 
