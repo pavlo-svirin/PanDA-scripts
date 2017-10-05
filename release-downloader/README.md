@@ -5,13 +5,15 @@ Usage for the tool:
 
 1) After cloning execute "setup.sh" - this will configure the repositories config as it requires absolute path pointing to reposdir.
 
-2) get-release.pl -d <destination_directory> -t <tmp_dir> <release_name>
+2) get-release.pl [-n] -d <destination_directory> -t <tmp_dir> <release_name>
 
 	where: <destination_directory> - release will be installed into "<destination_directory>/<release_name>"
 
 		<tmp_dir> - a path to directory where temporary files for the installation will be stored
 
 		<release_name> - full name of the release to be installed, e.g., AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt
+
+		 -n - do not resolve dependencies
 
 	Example:
 		get-release.sh -d /lustre/atlas/proj-shared/csc108/app_dir/atlas_app/atlas_rel/release-test/ -t /tmp/release_dl_tmp  AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt
