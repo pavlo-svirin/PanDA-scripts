@@ -16,9 +16,9 @@ Usage for the tool:
 		 -n - do not resolve dependencies
 
 	Example:
-		```bash
+		
 		get-release.sh -d /lustre/atlas/proj-shared/csc108/app_dir/atlas_app/atlas_rel/release-test/ -t /tmp/release_dl_tmp  AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt
-		```
+		
 
 3) install_pacman.sh <pacman_dir>
 
