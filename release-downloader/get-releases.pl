@@ -14,12 +14,13 @@ sub cleanup{
 }
 
 sub help{
-	print "Usage: get-release.pl -d <destination_directory> [-c <cache_dir>] <release_name>
+	print "Usage: get-release.pl [-n] -d <destination_directory> -t <tmp_dir> <release_name>
 		where: <destination_directory> - release will be installed into \"<destination_directory>/<release_name>\"
-			<cace_directory> - a place where cache data will be stored
-			<release_name> - name of the release to be installed, e.g., AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt\n
+			<tmp_dir> - a place where tmp data will be stored
+			<release_name> - name of the release to be installed, e.g., AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt
+			-n - do not resolve dependencies\n
 		Example:
-			get-release.sh -d /lustre/atlas/proj-shared/csc108/app_dir/atlas_app/atlas_rel/release-test/  AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt\n\n";
+			get-release.sh -d /lustre/atlas/proj-shared/csc108/app_dir/atlas_app/atlas_rel/release-test/ -t /lustre/atlas/proj-shared/csc108/app_dir/atlas_app/atlas_rel/tmp  AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt\n\n";
 }
 
 my $yumdir = './etc/yum.repos.d/';
@@ -27,11 +28,16 @@ my $yumdir = './etc/yum.repos.d/';
 # ========
 
 my %options=();
-getopts("hd:t:", \%options);
+getopts("nhd:t:", \%options);
 
 if(defined($options{h})){
 	help;
 	exit 0;
+}
+
+my $resolve_deps = 1;
+if(defined($options{n})){
+	$resolve_deps = 0;
 }
 
 
@@ -110,8 +116,12 @@ system("mkdir -p $dldir $dstdir $tmproot");
 print "Config read. Resolving packages.\n";
 #print "yumdownloader -c $ENV{PWD}/etc/yum.conf --urls --resolve AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt > ./urls.txt";
 my $extraPackages = "AtlasSetup CMake_3.6.0_Linux-x86_64-0-0";
-print("yumdownloader -q -c $ENV{PWD}/etc/yum.conf --urls --resolve $relname $extraPackages > $urls_file");
-system("yumdownloader -q -c $ENV{PWD}/etc/yum.conf --urls --resolve $relname $extraPackages > $urls_file");
+#print("yumdownloader -q -c $ENV{PWD}/etc/yum.conf --urls --resolve $relname $extraPackages > $urls_file");
+my $yumdl_cmd = "yumdownloader -q -c $ENV{PWD}/etc/yum.conf --urls " . ($resolve_deps ? "--resolve " : "") . "$relname " . ($resolve_deps ? "$extraPackages " : "AtlasSetup CMake_3.6.0_Linux-x86_64-0-0 gcc_6.2.0_x86_64_slc6-1.0.0-1 Python-597a5_2.7.13_x86_64_slc6_gcc62_opt-1.0.0-88 LCG_88_Python_2.7.13_x86_64_slc6_gcc62_opt-1.0.0-88") ." > $urls_file";
+
+print($yumdl_cmd);
+#system("yumdownloader -q -c $ENV{PWD}/etc/yum.conf --urls --resolve $relname $extraPackages > $urls_file");
+system($yumdl_cmd);
 # 		or die("Unable to find release or resolve dependencies, check release name or network connectivity");
  
 # parse url list, create prefix files
