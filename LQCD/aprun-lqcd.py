@@ -45,7 +45,7 @@ lqcd_command = {
 export PMI_NO_FORK=1
 export CRAY_CUDA_MPS=1
 
-cd $PBS_O_WORKDIR
+cd /lustre/atlas2/nph109/proj-shared/Nt12_2017_runs/
 date
 
 for i in {0..12}
