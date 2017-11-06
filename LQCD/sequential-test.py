@@ -39,7 +39,7 @@ class SequentialLQCDSubmitter(object):
 				if js['next'] is not None:
 					routes.append("[{0}]->[{1}]".format(js['name'], js['next']))
 				else:
-					routes.append("[{0}]".format(js[name]))
+					routes.append("[{0}]".format(js['name']))
 
 		route_str = " ".join(routes)
 		cmd = "perl /data/psvirin/graph-easy.pl"
@@ -151,8 +151,8 @@ job.prodSourceLabel   = 'user'
 job.computingSite     = site
 
 lqcd_command = {
-		"nodes" : 10,
-		"walltime" : "02:00:00",
+		"nodes" : 1,
+		"walltime" : "00:10:00",
 		"name" : "lqcd-test",
 		"command" : """
 cd /lustre/atlas1/nph109/proj-shared/forPSV
@@ -160,8 +160,7 @@ cd /lustre/atlas1/nph109/proj-shared/forPSV
 echo "-----------------------------------------------------"
 echo "Start job: `date`"
 echo "-----------------------------------------------------"
-echo "aprun -n 10 -N 1 ./wrapper"
-aprun -n 10 -N 1 ./wrapper
+aprun -n 1 date
 echo "-----------------------------------------------------"
 echo "End job: `date`"
 echo "-----------------------------------------------------"
@@ -198,10 +197,10 @@ job.computingSite     = site
 
 lqcd_command = {
 		"nodes" : 1,
-		"walltime" : "01:10:00",
+		"walltime" : "00:10:00",
 		"name" : "lqcd-test",
 		"command" : """
-aprun -n 16 sleep 3600
+aprun -n 16 sleep 300
 """
 		}
 
@@ -233,8 +232,8 @@ job.prodSourceLabel   = 'user'
 job.computingSite     = site
 
 lqcd_command = {
-		"nodes" : 10,
-		"walltime" : "02:00:00",
+		"nodes" : 1,
+		"walltime" : "00:10:00",
 		"name" : "lqcd-test",
 		"command" : """
 cd /lustre/atlas1/nph109/proj-shared/forPSV
@@ -242,8 +241,7 @@ cd /lustre/atlas1/nph109/proj-shared/forPSV
 echo "-----------------------------------------------------"
 echo "Start job: `date`"
 echo "-----------------------------------------------------"
-echo "aprun -n 10 -N 1 ./wrapper"
-aprun -n 10 -N 1 ./wrapper
+aprun -n 10  date
 echo "-----------------------------------------------------"
 echo "End job: `date`"
 echo "-----------------------------------------------------"
@@ -298,14 +296,53 @@ fileOL.dataset           = job.destinationDBlock
 fileOL.type = 'log'
 job.addFile(fileOL)
 
-job.cmtConfig = "C"
+job.cmtConfig = "C,E"
 
 #job_route['D'] = job
 sls.addJob('D', job)
 
-#sls.submit()
+
+# =========================
+
+job = JobSpec()
+job.jobDefinitionID   = int(time.time()) % 10000
+job.jobName           = "%s" % commands.getoutput('uuidgen')
+# MPI transform on Titan that will run actual job
+job.transformation    = '#json#'
+
+job.destinationDBlock = datasetName
+job.destinationSE     = destName
+job.currentPriority   = 1000
+job.prodSourceLabel   = 'user'
+job.computingSite     = site
+
+lqcd_command = {
+		"nodes" : 1,
+		"walltime" : "00:05:00",
+		"name" : "lqcd-test",
+		"command" : """
+aprun -n 1 date
+"""
+		}
+
+job.jobParameters = json.dumps(lqcd_command)
+
+fileOL = FileSpec()
+fileOL.lfn = "%s.job.log.tgz" % job.jobName
+fileOL.destinationDBlock = job.destinationDBlock
+fileOL.destinationSE     = job.destinationSE
+fileOL.dataset           = job.destinationDBlock
+fileOL.type = 'log'
+job.addFile(fileOL)
+
+
+#job_route['D'] = job
+sls.addJob('E', job, 'D')
 
 print(sls)
+print("Now submitting.....")
+sls.submit()
+
 
 sys.exit(0)
 
