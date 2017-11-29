@@ -35,6 +35,7 @@ job.destinationDBlock = datasetName
 job.destinationSE     = destName
 job.currentPriority   = 1000
 job.prodSourceLabel   = 'user'
+job.VO = "lqcd"
 job.computingSite     = site
 job.cmtConfig = json.dumps({'name' : 'BBBB', 'next' : None})
 
