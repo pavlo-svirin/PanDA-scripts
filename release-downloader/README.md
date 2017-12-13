@@ -14,6 +14,7 @@ Usage for the tool:
 		<release_name> - full name of the release to be installed, e.g., AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt
 
 	Example:
+		
 		get-releases.pl -d /lustre/atlas/proj-shared/csc108/app_dir/atlas_app/atlas_rel/release-test/ -t /tmp/release_dl_tmp  AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt
 
 3) install_pacman.sh <pacman_dir>
