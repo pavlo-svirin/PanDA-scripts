@@ -5,7 +5,7 @@ Usage for the tool:
 
 1) After cloning execute "setup.sh" - this will configure the repositories config as it requires absolute path pointing to reposdir.
 
-2) get-release.pl -d <destination_directory> -t <tmp_dir> <release_name>
+2) get-releases.pl -d <destination_directory> -t <tmp_dir> <release_name>
 
 	where: <destination_directory> - release will be installed into "<destination_directory>/<release_name>"
 
@@ -14,7 +14,7 @@ Usage for the tool:
 		<release_name> - full name of the release to be installed, e.g., AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt
 
 	Example:
-		get-release.pl -d /lustre/atlas/proj-shared/csc108/app_dir/atlas_app/atlas_rel/release-test/ -t /tmp/release_dl_tmp  AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt
+		get-releases.pl -d /lustre/atlas/proj-shared/csc108/app_dir/atlas_app/atlas_rel/release-test/ -t /tmp/release_dl_tmp  AtlasOffline_21.0.19_x86_64-slc6-gcc49-opt
 
 3) install_pacman.sh <pacman_dir>
 
