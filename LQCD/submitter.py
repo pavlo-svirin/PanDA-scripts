@@ -30,12 +30,12 @@ class SequentialLQCDSubmitter:
 		self.site = site
 		self.vo = vo
 
-	def createJob(nodes, walltime, command, inputs = None, name = ""):
+	def createJob(self, name, nodes, walltime, command, inputs = None):
 		job = JobSpec()
 		job.jobDefinitionID   = int(time.time()) % 10000
 		job.jobName           = "%s" % commands.getoutput('uuidgen')
-		job_desc.VO = self.vo
-		job_desc.transformation = self.transformation
+		job.VO = self.vo
+		job.transformation = self.transformation
 
 		job.destinationDBlock = self.datasetName
 		job.destinationSE     = self.destName
@@ -163,14 +163,14 @@ if jobdef is None or len(jobdef)==0:
 
 sls = SequentialLQCDSubmitter(aSrvID, 'ANALY_ORNL_Titan_LQCD', "lqcd")
 
-for name, descr in jobdef['jobs']:
+for jobname, descr in jobdef['jobs'].items():
 	inputs = None
 	# define outputs
 	outputs = None
-	if jobdef['sequence'][name] is not None:
-		outputs = jobdef['sequence'][name]
-	job = sls.createJob(name=name, walltime=descr['walltime'], command=descr['command'], nodes=descr['nodes'], inputs=None)
-	sls.addJob(name, job, outputs) 
+	if jobname in jobdef['sequence']:
+		outputs = jobdef['sequence'][jobname]
+	job = sls.createJob(name=jobname, walltime=descr['walltime'], command=descr['command'], nodes=descr['nodes'], inputs=None)
+	sls.addJob(jobname, job, outputs) 
 
 print(sls)	
 

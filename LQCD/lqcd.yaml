@@ -1,8 +1,8 @@
 seqname: Test_Seq_LQCD
 jobs:
     A:
-        time: "20:00:00"
-        nodes: 500
+        walltime: "20:00:00"
+        nodes: "500"
         partition: "gres1&gres2"
         command: |+
             for i in {1..20}; do
@@ -10,11 +10,19 @@ jobs:
                 
             done
     B:
-        time: "20:00:00"
-        nodes: 3000
+        walltime: "20:00:00"
+        nodes: "3000"
+        partition: "gres1&gres2"
+        command: |+
+            aaaaaaaa 
+            bbbbbb
+    C:
+        walltime: "20:00:00"
+        nodes: "3000"
         partition: "gres1&gres2"
         command: |+
             aaaaaaaa 
             bbbbbb
 sequence:
     A: B
+    C: B
