@@ -1,10 +1,37 @@
 #!/bin/bash
 
-DSTDIR="./panda-submission2"
+DSTDIR=
 
 set -e
 
-/usr/local/bin/python2 -m virtualenv ${DSTDIR}
+usage() { echo -e "Usage: $0 -d <directory_to_install_to>\n\n" 1>&2; exit 1; }
+
+while getopts ":d::" o; do
+    case "${o}" in
+        d)
+            DSTDIR=${OPTARG}
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ -z "${DSTDIR}" ];  then
+    usage
+    exit 1
+fi
+
+cat << EOF
+DSTDIR=${DSTDIR}
+EOF
+
+# check for virtualenv
+python -c "import virtualenv" 2>/dev/null || (echo "No virtualenv installed, exiting..." ; exit 1 )
+
+python -m virtualenv ${DSTDIR}
+
 cd ${DSTDIR}
 . bin/activate
 pip install -U setuptools wheel pip
