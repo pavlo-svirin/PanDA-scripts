@@ -1,37 +1,20 @@
 #!/bin/bash
 
-DSTDIR=
+help(){
+    echo -e "Usage: ./install-submission-box.sh <DST_DIR>\n"
+}
 
-set -e
-
-usage() { echo -e "Usage: $0 -d <directory_to_install_to>\n\n" 1>&2; exit 1; }
-
-while getopts ":d::" o; do
-    case "${o}" in
-        d)
-            DSTDIR=${OPTARG}
-            ;;
-        *)
-            usage
-            ;;
-    esac
-done
-shift $((OPTIND-1))
-
-if [ -z "${DSTDIR}" ];  then
-    usage
+if [ $# -eq 0 ]; then
+    echo "Please specify a directory to install to"
+    help
     exit 1
 fi
 
-cat << EOF
-DSTDIR=${DSTDIR}
-EOF
+DSTDIR="$1"
 
-# check for virtualenv
-python -c "import virtualenv" 2>/dev/null || (echo "No virtualenv installed, exiting..." ; exit 1 )
+set -e
 
-python -m virtualenv ${DSTDIR}
-
+/usr/local/bin/python2 -m virtualenv ${DSTDIR}
 cd ${DSTDIR}
 . bin/activate
 pip install -U setuptools wheel pip
@@ -62,7 +45,7 @@ export PANDA_URL=http://pandawms.org:25080/server/panda #set the HTTP URL to ser
 export PANDA_URL_SSL=https://pandawms.org:25443/server/panda #set the HTTPS URL to server
 export PYTHONPATH=${VIRTUAL_ENV}/lib/python2.7/site-packages/pandacommon:${VIRTUAL_ENV}/lib/python2.7/site-packages/pandaserver/
 
-echo 'import os; from termcolor2 import c; print "Your CA directory is: %s" % c(os.environ["X509_CERT_DIR"]).magenta;' | python -
+echo 'import os; from termcolor2 import c; print "Your CA directory is: %s" % c(os.environ["X509_CERT_DIR"] if "X509_CERT_DIR" in os.environ else "/etc/grid-security/certificates").magenta;' | python -
 echo 'import os; from termcolor2 import c; print "Your PanDA Server is: %s , you can change it by setting PANDA_URL_SSL variable" % c(os.environ["PANDA_URL_SSL"]).magenta;' | python -
 EOF
 
@@ -70,6 +53,7 @@ EOF
 
 
 # install submitter
+pip install git+https://github.com/pavlo-svirin/panda-clienttools.git
 
 # create kill job
 
