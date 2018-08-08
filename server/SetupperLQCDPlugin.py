@@ -22,25 +22,38 @@ class SetupperLQCDPlugin (SetupperPluginBase):
 	nextNames = {}
 	prevNames = {}
 	jobIDs = {}
+	toActivate = []
 	for j in self.jobs:
-		# load JSON from cmtConfig
-		if j.cmtConfig is not None and j.cmtConfig<>'':
-			self.logger.debug('JSON: ' + j.cmtConfig)
-			nextData = json.loads(j.cmtConfig)
-			if nextData['name'] not in prevNames:
-				prevNames[nextData['name']] = []
-			if nextData['next'] is not None:
-				self.logger.debug("Last stage")
-				if nextData['next'] not in prevNames:
-					prevNames[nextData['next']] = [nextData['name']]
-				else:
-					prevNames[nextData['next']].append(nextData['name'])
-		jobIDs[nextData['name']] = [j, nextData]
+		if j.transformation=='#json#':
+			# load JSON from cmtConfig
+			if j.cmtConfig is not None and j.cmtConfig<>'':
+				self.logger.debug('JSON: ' + j.cmtConfig)
+				jobData = json.loads(j.cmtConfig)
+				if jobData['name'] not in prevNames:
+					prevNames[jobData['name']] = []
+				if jobData['next'] is not None:
+					if not isinstance(jobData['next'], list):
+						# has only one successor
+						self.logger.debug("Last stage: one successor")
+						if jobData['next'] not in prevNames:
+							prevNames[jobData['next']] = [jobData['name']]
+						else:
+							prevNames[jobData['next']].append(jobData['name'])
+					else:
+						# it is a list
+						self.logger.debug("Last stage: multiple successors")
+						for n in jobData['next']:
+							if n not in prevNames:
+								prevNames[n] = [jobData['name']]
+							else:
+								prevNames[n].append(jobData['name'])
+			jobIDs[jobData['name']] = [j, jobData]
+		else:
+			toActivate.append(j)
 
 	self.logger.debug(str(prevNames))
 
 	self.logger.debug("Now picking jobs to ba activated")
-	toActivate = []
 	for n, cnt in prevNames.items():
 		if len(cnt)==0:
 			toActivate.append(jobIDs[n][0])
@@ -49,7 +62,16 @@ class SetupperLQCDPlugin (SetupperPluginBase):
 
 	for name, j in jobIDs.items():
 		if j[1]['next'] is not None:
-			j[1]['next'] = jobIDs[j[1]['next']][0].PandaID	# changing names to PandaIDs
+			# if single successor
+			if not isinstance(j[1]['next'], list):
+				j[1]['next'] = jobIDs[j[1]['next']][0].PandaID	# changing names to PandaIDs
+			# multiple successors
+			else:
+				jn = []
+				for n in j[1]['next']:
+					jn.append(jobIDs[n][0].PandaID)	# changing names to PandaIDs
+				j[1]['next'] = jn
+
 		# if fails -> shift block back to right
 		j[1]['prev'] = []
 		for p in prevNames[name]:
@@ -67,35 +89,4 @@ class SetupperLQCDPlugin (SetupperPluginBase):
 
 	# activate
 	self.jobs = toActivate
-"""
-        for job in self.jobs:
-		if job.computingSite<>'ANALY_ORNL_Titan_LQCD' :
-                        acJobs.append(job)
-			continue
-                self.jobs_map[job.PandaID] = job
-        for panda_id in self.jobs_map:
-                setToActivated = True
-                if job == None or job.jobStatus <> 'defined': #['unknown', 'running', 'starting', 'finished','failed']:
-                        continue
-                if job.cmtConfig is not None:
-                        # split cmtConfig by ,
-                        depends_on = job.cmtConfig.split(',')
-                        #for dj in depends_on:
-                                #if dj in self.jobs_map and jobs_map[dj].jobStatus <> 'finished':
-			if depends_on:
-				depjob = self.taskBuffer.peekJobs(self, depends_on, fromDefined=True,fromActive=True,fromArchived=True,fromWaiting=False,forAnal=False)
-				for d in depjob:
-					if d.jobStatus<>'finished':
-                                        	setToActivated = False
-                if not setToActivated:
-                        #acJobs.append(job)
-			self.jobs = []
 
-        # activate
-	self.logger.debug("We are activating " + str(len(acJobs)) + "jobs")
-        self.taskBuffer.activateJobs(acJobs)
-"""
-
-    # post run
-    #def postRun(self):
-    #    pass
