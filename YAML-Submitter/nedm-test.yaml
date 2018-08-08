@@ -1,0 +1,44 @@
+seqname: nEDM-test
+
+jobs:
+  capture_07.pbs:
+    nodes: 200
+    walltime: "30:00"
+    command: |+
+
+      cd $PROJWORK/nph118/MDC_2017/Captures/
+      pwd
+      source /ccs/proj/nph118/scripts/G4DataPaths.sh
+      aprun -n 3200 -N 16 /ccs/proj/nph118/nEDMSims/build-gcc/nEDMMeasurementCell/nEDMMeasurementCell_Capture /ccs/proj/nph118/scripts/MDC_Captures/run_captures_07.mac
+
+  capture_08.pbs:
+    nodes: 200
+    walltime: "30:00"
+    command: |+
+
+      cd $PROJWORK/nph118/MDC_2017/Captures/
+      pwd
+      source /ccs/proj/nph118/scripts/G4DataPaths.sh
+      aprun -n 3200 -N 16 /ccs/proj/nph118/nEDMSims/build-gcc/nEDMMeasurementCell/nEDMMeasurementCell_Capture /ccs/proj/nph118/scripts/MDC_Captures/run_captures_08.mac
+
+  capture_09.pbs:
+    nodes: 200
+    walltime: "30:00"
+    command: |+
+
+      cd $PROJWORK/nph118/MDC_2017/Captures/
+      pwd
+      source /ccs/proj/nph118/scripts/G4DataPaths.sh
+      aprun -n 3200 -N 16 /ccs/proj/nph118/nEDMSims/build-gcc/nEDMMeasurementCell/nEDMMeasurementCell_Capture /ccs/proj/nph118/scripts/MDC_Captures/run_captures_09.mac
+
+  capture_10.pbs:
+    nodes: 200
+    walltime: "30:00"
+    command: |+
+
+      cd $PROJWORK/nph118/MDC_2017/Captures/
+      pwd
+      source /ccs/proj/nph118/scripts/G4DataPaths.sh
+      aprun -n 3200 -N 16 /ccs/proj/nph118/nEDMSims/build-gcc/nEDMMeasurementCell/nEDMMeasurementCell_Capture /ccs/proj/nph118/scripts/MDC_Captures/run_captures_10.mac
+
+sequence:

@@ -6,6 +6,8 @@
 import sys
 import time
 import commands
+import json
+
 import userinterface.Client as Client
 from taskbuffer.JobSpec import JobSpec
 from taskbuffer.FileSpec import FileSpec
@@ -18,8 +20,7 @@ for idx,argv in enumerate(sys.argv):
         sys.argv = sys.argv[:idx]
         break
 
-#site = 'ANALY_ORNL_Titan_LQCD'
-site = 'Titan_Harvester_test_MCORE'
+site = 'Bellarmine-LSST'
 
 datasetName = 'panda.destDB.%s' % commands.getoutput('uuidgen')
 destName    = 'local'
@@ -28,14 +29,32 @@ job = JobSpec()
 job.jobDefinitionID   = int(time.time()) % 10000
 job.jobName           = "%s" % commands.getoutput('uuidgen')
 # MPI transform on Titan that will run actual job
-job.transformation    = ' ./wrapper'
+job.transformation    = '#json#'
 
 job.destinationDBlock = datasetName
 job.destinationSE     = destName
 job.currentPriority   = 1000
 job.prodSourceLabel   = 'user'
+job.VO = "lqcd"
+job.metadata = ''
 job.computingSite     = site
-job.jobParameters = ''
+job.cmtConfig = json.dumps({'name' : 'BBBB', 'next' : None})
+
+lqcd_command = {
+		"nodes" : 1,
+		"walltime" : "03:00:00",
+		"name" : "lqcd-test",
+		"next" : None,
+		"command" : """
+. $OSG_GRID/setup.sh
+
+mkdir work output
+
+python /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/phosim.py  /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/star -c /cvmfs/lsst.opensciencegrid.org/panda/phosim-phosim_release-0876792bb103/examples/nobackground   -o $(pwd)/output -w $(pwd)/work;
+"""
+		}
+
+job.jobParameters = json.dumps(lqcd_command)
 
 fileOL = FileSpec()
 fileOL.lfn = "%s.job.log.tgz" % job.jobName

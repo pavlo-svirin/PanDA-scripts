@@ -6,6 +6,8 @@
 import sys
 import time
 import commands
+import json
+
 import userinterface.Client as Client
 from taskbuffer.JobSpec import JobSpec
 from taskbuffer.FileSpec import FileSpec
@@ -18,7 +20,6 @@ for idx,argv in enumerate(sys.argv):
         sys.argv = sys.argv[:idx]
         break
 
-#site = 'ANALY_ORNL_Titan_LQCD'
 site = 'Titan_Harvester_test_MCORE'
 
 datasetName = 'panda.destDB.%s' % commands.getoutput('uuidgen')
@@ -28,14 +29,26 @@ job = JobSpec()
 job.jobDefinitionID   = int(time.time()) % 10000
 job.jobName           = "%s" % commands.getoutput('uuidgen')
 # MPI transform on Titan that will run actual job
-job.transformation    = ' ./wrapper'
+job.transformation    = '#json#'
 
 job.destinationDBlock = datasetName
 job.destinationSE     = destName
 job.currentPriority   = 1000
 job.prodSourceLabel   = 'user'
 job.computingSite     = site
-job.jobParameters = ''
+
+lqcd_command = {
+		"nodes" : 1,
+		"walltime" : "00:05:00",
+		"name" : "nt12b6680",
+		"command" : """
+date
+aprun -n 1 sleep 200
+"""
+		}
+
+job.jobParameters = json.dumps(lqcd_command)
+job.cmtConfig = json.dumps({'name' : 'HarvesterTest', 'next' : None})
 
 fileOL = FileSpec()
 fileOL.lfn = "%s.job.log.tgz" % job.jobName

@@ -6,6 +6,8 @@
 import sys
 import time
 import commands
+import json
+
 import userinterface.Client as Client
 from taskbuffer.JobSpec import JobSpec
 from taskbuffer.FileSpec import FileSpec
@@ -18,8 +20,7 @@ for idx,argv in enumerate(sys.argv):
         sys.argv = sys.argv[:idx]
         break
 
-#site = 'ANALY_ORNL_Titan_LQCD'
-site = 'Titan_Harvester_test_MCORE'
+site = 'ANALY_TJLAB_LQCD'
 
 datasetName = 'panda.destDB.%s' % commands.getoutput('uuidgen')
 destName    = 'local'
@@ -28,14 +29,33 @@ job = JobSpec()
 job.jobDefinitionID   = int(time.time()) % 10000
 job.jobName           = "%s" % commands.getoutput('uuidgen')
 # MPI transform on Titan that will run actual job
-job.transformation    = ' ./wrapper'
+job.transformation    = '#json#'
 
 job.destinationDBlock = datasetName
 job.destinationSE     = destName
 job.currentPriority   = 1000
 job.prodSourceLabel   = 'user'
+job.VO = "lqcd"
+job.metadata = ''
 job.computingSite     = site
-job.jobParameters = ''
+job.cmtConfig = json.dumps({'name' : 'IC-Test', 'next' : None})
+
+
+lqcd_command = {
+		"nodes" : 1,
+		"walltime" : "00:01:00",
+		"name" : "lqcd-test",
+		"next" : None,
+		"command" : """
+#PBS -l nodes=1:intel
+#PBS -l walltime=00:01:00
+#PBS -A spectrum
+#PBS -q ib
+mpiprun-rsh hostname -f
+"""
+		}
+
+job.jobParameters = json.dumps(lqcd_command)
 
 fileOL = FileSpec()
 fileOL.lfn = "%s.job.log.tgz" % job.jobName
