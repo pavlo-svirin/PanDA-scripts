@@ -7,3 +7,9 @@ enabled=1
 name=ATLAS offline releases CC7
 baseurl=http://cern.ch/atlas-software-dist-eos/RPMs/releases/cc7
 enabled=0
+
+
+[atlas-offline-releases-slc6-EOS]
+name=ATLAS offline releases SLC6 on EOS
+baseurl=http://atlas-software-dist-eos.web.cern.ch/atlas-software-dist-eos/RPMs/releases/slc6
+enabled=1
